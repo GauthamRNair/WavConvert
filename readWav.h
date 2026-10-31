@@ -34,7 +34,15 @@ void readWav(string inFileName, string outFileName) {
         return;
     }
 
+    int dataSize;
+    memcpy(&dataSize, &rawBytes[40], sizeof(int)); // Get the audio data size I put in the header
+    dataSize -= 4; // Quick fix since my four identifier chars were included in the size
+
     rawBytes.erase(rawBytes.begin(), rawBytes.begin()+48); // Start at the act data
+
+    if(dataSize < rawBytes.size()) {
+        rawBytes.resize(dataSize); // Remove any padding bytes I added on encoding
+    }
 
     ofstream RAWout;
     RAWout.open(outFileName, ios::binary);
