@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include <cstring>
 #include "getBytes.h"
 
 using namespace std;
