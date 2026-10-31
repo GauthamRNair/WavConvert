@@ -37,10 +37,16 @@ void writeWav(string fileName, vector<char> rawBytes) {
 
     WavFileHeader fileHeader;
     fileHeader.data_size = rawBytes.size();
-    fileHeader.data_size += (fileHeader.bytes_per_block - (rawBytes.size() % fileHeader.bytes_per_block)) % fileHeader.bytes_per_block; // Have to make the num data bytes divisible by the bytes per block
+    int paddingSize = (fileHeader.bytes_per_block - (rawBytes.size() % fileHeader.bytes_per_block)) % fileHeader.bytes_per_block;
+    fileHeader.data_size += paddingSize; // Have to make the num data bytes divisible by the bytes per block
     fileHeader.file_size = fileHeader.data_size + 44;
 
     WAVfout.write(reinterpret_cast<const char*>(&fileHeader), sizeof(fileHeader));
+
+    WAVfout.write(rawBytes.data(), rawBytes.size());
+    for(int i = 0; i < paddingSize; i++) {
+        WAVfout.write({0x00}, 1);
+    }
 
     WAVfout.close();
 
