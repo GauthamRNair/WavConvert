@@ -42,7 +42,8 @@ void writeWav(string inFileName, string outFileName) {
     WavFileHeader fileHeader;
     fileHeader.data_size = rawBytes.size();
     int paddingSize = (fileHeader.bytes_per_block - (rawBytes.size() % fileHeader.bytes_per_block)) % fileHeader.bytes_per_block;
-    fileHeader.data_size += paddingSize; // Have to make the num data bytes divisible by the bytes per block
+    // fileHeader.data_size += paddingSize; // Have to make the num data bytes divisible by the bytes per block
+    // I realized the .wav has the functionality to not include padding data in the header's data size
     fileHeader.file_size = fileHeader.data_size + 44;
 
     WAVfout.write(reinterpret_cast<const char*>(&fileHeader), sizeof(fileHeader));
