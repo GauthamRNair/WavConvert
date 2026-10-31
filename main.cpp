@@ -1,32 +1,36 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "writeWav.h"
+#include "readWav.h"
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
-    if(argc != 3) {
-        cerr << "Incorrect number of arguments: \".\\ToWav.exe <input file> <output file>\"" << endl;
+    string inFileName, outFileName;
+
+    if(argc == 3) {
+        inFileName = argv[1];
+        outFileName = argv[2];
+    } else if(argc == 1) {
+        cout << "What file are you reading from?: ";
+        cin >> inFileName;
+        cout << "What file are you writing to?: ";
+        cin >> outFileName;
+    } else {
+        cerr << "Incorrect number of arguments: \".\\ToWav.exe\" OR \".\\ToWav.exe <input file> <output file>\"" << endl;
+        return 1;
     }
 
-    ifstream fin;
-    fin.open(argv[1], ios::binary | ios::ate);
+    char userChoice;
+    cout << "Are you encoding(e) or decoding(d): ";
+    cin >> userChoice;
 
-    if(!fin.is_open()) {
-        cerr << "Input file couldn't open!!!" << endl;
+    if(userChoice == 'e') {
+        writeWav(inFileName, outFileName);
+    }else if(userChoice == 'd') {
+        readWav(inFileName, outFileName);
     }
-
-    streamsize fsize = fin.tellg(); // Since we opened file at the end, we get the size when reading curr pos in stream
-    fin.seekg(0, ios::beg); // Get back to beginning
-
-    vector<char> rawBytes(fsize);
-
-    fin.read(rawBytes.data(), fsize); // Read all bytes
-    fin.close();
-
-    rawBytes.insert(rawBytes.begin(), {'G', 'N', 'T', 'W'}); // My identifier so I know its my file
-
-    writeWav("test.wav", rawBytes);
 
     return 0;
 }

@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <fstream>
 #include <string>
+#include "getBytes.h"
 
 using namespace std;
 
@@ -22,13 +23,16 @@ struct WavFileHeader {
     uint32_t bytes_per_second = 88200; // I can hardcode this value for now
     uint16_t bytes_per_block = 2; // bytes per sample times num channels
     uint16_t bits_per_sample = 16;
-    uint32_t data_header{0x61746164};
+    uint32_t data_header{0x61746164}; // "data"
     uint32_t data_size = 0;
 };
 
-void writeWav(string fileName, vector<char> rawBytes) {
+void writeWav(string inFileName, string outFileName) {
+    // Get raw bytes
+    vector<char> rawBytes = getRawBytes(inFileName, false);
+
     ofstream WAVfout;
-    WAVfout.open(fileName, ios::binary);
+    WAVfout.open(outFileName, ios::binary);
 
     if(!WAVfout.is_open()) {
         cerr << "Couldn't open the wav file!!!" << endl;
@@ -45,11 +49,10 @@ void writeWav(string fileName, vector<char> rawBytes) {
 
     WAVfout.write(rawBytes.data(), rawBytes.size());
     for(int i = 0; i < paddingSize; i++) {
-        WAVfout.write({0x00}, 1);
+        WAVfout.put(0);
     }
 
     WAVfout.close();
-
 }
 
 #endif

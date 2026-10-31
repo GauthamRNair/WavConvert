@@ -1,4 +1,4 @@
-This is the file I'm trying to hide in the .wav file!
+This is a file I'm trying to hide in the .wav file!
 I hope I can encode and decode it back out.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
