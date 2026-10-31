@@ -1,6 +1,7 @@
-This is a file I'm trying to hide in the .wav file!
-I hope I can encode and decode it back out.
+This is a file you can use to hide in a .wav file!
+I hope you can encode and decode it back out.
 
+Some other text:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
 sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
 Ut enim ad minim veniam, 
